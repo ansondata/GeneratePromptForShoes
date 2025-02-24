@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoe Prompt Generator</title>
+    <script>
+        const options = {
+            "Shoe Type": ["Random", "Sneakers", "Casual Shoes", "Leather Shoes", "Boots", "Slippers", "High Heels", "Sandals", "Canvas Shoes", "Skate Shoes", "Running Shoes", "Basketball Shoes", "Hiking Shoes"],
+            "Gender": ["Random", "Male", "Female", "Unisex"],
+            "Chinese Zodiac": ["Random", "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"],
+            "Zodiac Sign": ["Random", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"],
+            "Personality": ["Random", "Meticulous, Conservative", "Free-spirited, Innovative", "Outgoing, Strong Leadership", "Rational, Unique"],
+            "Cultural Orientation": ["Random", "Eastern", "European", "American", "Japanese", "Korean", "Street Culture", "Futuristic", "Bohemian", "Vintage", "Techwear", "Minimalist"],
+            "Color Preference": ["Random", "Red", "Blue", "Black", "White", "Green", "Yellow", "Purple", "Pink", "Orange", "Brown", "Gray", "Gold", "Silver", "Neon", "Gradient"],
+            "Age Group": ["Random", "Children", "Teenagers", "Young Adults", "Adults", "Seniors"],
+            "Preferred Totem": ["Random", "Dragon", "Phoenix", "Qilin", "Taichi", "Calligraphy", "Auspicious Clouds", "Landscape Painting", "Plum Blossom, Orchid, Bamboo, Chrysanthemum", "Blue and White Porcelain"],
+            "Design Elements": ["Random", "Breathable Mesh", "Leather Patchwork", "Transparent Sole", "Detachable Accessories", "Glow-in-the-dark", "Eco-friendly Materials"]
+        };
+
+        function populateDropdowns() {
+            Object.keys(options).forEach(category => {
+                let select = document.getElementById(category);
+                if (select) {
+                    options[category].forEach(option => {
+                        let optElement = document.createElement("option");
+                        optElement.value = option;
+                        optElement.textContent = option;
+                        select.appendChild(optElement);
+                    });
+                }
+            });
+        }
+
+        function generatePrompts() {
+            const prompts = [
+                "A highly detailed and realistic 3D-rendered {Shoe Type} designed for {Gender} who identify with the {Chinese Zodiac} and {Zodiac Sign} personality traits. The shoe embodies characteristics of {Personality} while drawing cultural inspiration from {Cultural Orientation}. The color scheme predominantly features {Color Preference}, specifically tailored for {Age Group}. A distinctive feature of this design is the integration of {Preferred Totem} on the shoe upper and {Design Elements} on the sole, symbolizing the fusion of heritage and modernity.",
+                "A meticulously crafted {Shoe Type} designed for {Gender} embodying the {Chinese Zodiac} and {Zodiac Sign} traits. This footwear reflects the meticulous nature associated with {Personality}, drawing inspiration from {Cultural Orientation}. The primary colors are {Color Preference}, appealing to {Age Group}. The shoe features intricate {Preferred Totem} and integrates {Design Elements}, blending sustainability with traditional aesthetics.",
+                "A vibrant and stylish {Shoe Type} designed for {Gender} resonating with the {Chinese Zodiac} and {Zodiac Sign} characteristics. The shoe captures the essence of {Personality}, inspired by {Cultural Orientation}. The color palette includes {Color Preference}, tailored for {Age Group}. Adorned with {Preferred Totem}, and featuring {Design Elements}, this design exudes a whimsical and personalized charm.",
+                "An ultra-modern {Shoe Type} infused with the cultural depth of {Cultural Orientation}, meticulously designed for {Gender} with {Chinese Zodiac} and {Zodiac Sign} influences. This design stands out with its {Color Preference} shades, making it a top choice for {Age Group}. Featuring unique {Preferred Totem} engravings and advanced {Design Elements}, this footwear merges tradition with avant-garde aesthetics.",
+                "A bold and edgy {Shoe Type} constructed for {Gender}, showcasing {Chinese Zodiac} and {Zodiac Sign} inspired elements. This footwear embodies {Personality} values, intertwined with {Cultural Orientation} artistic heritage. Its dominant {Color Preference} theme resonates well with {Age Group}, making it a statement piece. Enhanced with {Preferred Totem} motifs and cutting-edge {Design Elements}, this shoe balances functionality with fashion-forward design."
+            ];
+
+            let finalPrompts = prompts.map(prompt => {
+                document.querySelectorAll("select").forEach(select => {
+                    let selectedValue = select.value === "Random" ? options[select.id][Math.floor(Math.random() * (options[select.id].length - 1)) + 1] : select.value;
+                    prompt = prompt.replaceAll(`{${select.id}}`, selectedValue);
+                });
+                return prompt;
+            });
+
+            document.getElementById("generatedPrompt").innerHTML = "<b>Prompt 1:</b> " + finalPrompts[0] + "<br><br><b>Prompt 2:</b> " + finalPrompts[1] + "<br><br><b>Prompt 3:</b> " + finalPrompts[2] + "<br><br><b>Prompt 4:</b> " + finalPrompts[3] + "<br><br><b>Prompt 5:</b> " + finalPrompts[4];
+        }
+
+        document.addEventListener("DOMContentLoaded", populateDropdowns);
+    </script>
+</head>
+<body>
+    <h2>Shoe Prompt Generator</h2>
+    <form>
+        <label for="Shoe Type">Shoe Type:</label>
+        <select id="Shoe Type"></select><br>
+        <label for="Gender">Gender:</label>
+        <select id="Gender"></select><br>
+        <label for="Chinese Zodiac">Chinese Zodiac:</label>
+        <select id="Chinese Zodiac"></select><br>
+        <label for="Zodiac Sign">Zodiac Sign:</label>
+        <select id="Zodiac Sign"></select><br>
+        <label for="Personality">Personality:</label>
+        <select id="Personality"></select><br>
+        <label for="Cultural Orientation">Cultural Orientation:</label>
+        <select id="Cultural Orientation"></select><br>
+        <label for="Color Preference">Color Preference:</label>
+        <select id="Color Preference"></select><br>
+        <label for="Age Group">Age Group:</label>
+        <select id="Age Group"></select><br>
+        <label for="Preferred Totem">Preferred Totem:</label>
+        <select id="Preferred Totem"></select><br>
+        <label for="Design Elements">Design Elements:</label>
+        <select id="Design Elements"></select><br>
+    </form>
+    <button onclick="generatePrompts()">Generate Prompts</button>
+    <p id="generatedPrompt"></p>
+</body>
+</html>
